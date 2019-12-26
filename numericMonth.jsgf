@@ -1,0 +1,6 @@
+#JSGF V1.0;
+
+grammar numericMonth;
+
+public <numericMonth> =  uno | dos | tres | cuatro | cinco | seis | siete | ocho |
+    nueve | diez | once | doce;

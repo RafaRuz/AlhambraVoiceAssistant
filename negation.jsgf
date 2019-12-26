@@ -1,0 +1,5 @@
+#JSGF V1.0;
+
+grammar negation;
+
+public <negation> = no|negativo|claro que no;

@@ -1,0 +1,82 @@
+<vxml version="2.1" xml:lang="es-ES">
+	<form id="datos" scope="document">
+		<field name="ciudadDestino">
+			<prompt>A que ciudad deseas viajar? </prompt>
+			<grammar src="ciudades.jsgf"/>
+		</field>
+		<filled>
+			<prompt>Has dicho <value expr="ciudadDestino"/>? </prompt>
+		</filled>
+	</form>
+</vxml>
+
+
+
+
+
+
+
+
+
+
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.1">
+
+    <!-- Aqui podemos definir variables globales -->
+
+    <property name="timeout" value="5s"/>
+
+    <link event="exit">
+	<grammar> adios|terminar|finalizar|salir</grammar>
+    </link>
+
+
+    <form id="start">
+	<block>
+	    <goto next="http://webhosting.voxeo.net/206381/www/NPI/mainMenu.vxml"/>
+	</block>
+    </form>
+
+    <form id="exit" scope="document">
+	<catch event"exit">
+	    <goto nextitem="confirmExit"/>
+	</catch>
+	<field name="confirmExit" type="boolean">
+	    <prompt>Seguro que desea terminar su compra?</prompt>
+	    <filled>
+		<if cond="confirmExit">
+		    De acuerdo, hasta la proxima.
+		<else/>
+		    De acuerdo, continuamos por donde nos quedamos.
+		    <clear namelist="confirmExit"/>
+		</if>
+	    </filled>
+	</field>
+    </form>
+
+</vxml>
+
+
+
+
+
+
+
+
+
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.1" application="app-root.vxml" xml:lang="es-ES">
+	<menu>
+		<prompt>Bienvenido. Opciones <enumerate/> </prompt>
+		<choice next="./buyTickets">Comprar tickets</choice>
+		<choice next="./buyTickets">Informacion general</choice>
+		<choice next="./buyTickets">Ayuda</choice>
+	</menu>
+</vxml>
+
+
+

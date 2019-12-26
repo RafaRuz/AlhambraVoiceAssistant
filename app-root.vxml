@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.1" xml:lang="es-ES">
+
+    
+
+
+    <!-- Aqui podemos definir variables globales -->
+
+    <property name="timeout" value="5s"/>
+
+    <var name="lastDialog" scope="application"/>
+
+
+    <form id="start">
+	<block>
+	    <goto next="./buyTickets.vxml"/>
+	</block>
+    </form>
+
+
+    <link event="exit">
+	<grammar src="./exit.jsgf"/>
+    </link>
+
+    <catch event="exit">
+	<goto next="./app-root.vxml#confirmExit"/>
+    </catch>
+
+    <menu id="confirmExit">
+	<prompt>Seguro que desea terminar su compra?</prompt>
+	<choice next="#confirmation"><grammar src="./affirmation.jsgf"/></choice>
+	<choice next="#negation"><grammar src="./negation.jsgf"/></choice>
+    </menu>
+
+    <form id="confirmation">
+	<block>
+	    De acuerdo, hasta la proxima.
+	    <exit/>
+	</block>
+    </form>
+
+    <form id="negation">
+	<block>
+	    De acuerdo, continuamos por donde nos quedamos.
+	    <goto expr="lastDialog"/>
+	</block>
+    </form>
+
+
+</vxml>
+

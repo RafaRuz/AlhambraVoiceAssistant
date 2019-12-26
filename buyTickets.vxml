@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.1" application="app-root.vxml" xml:lang="es-ES">
+
+    <var name="day"/>
+    <var name="month"/>
+    <var name="year"/>
+    <var name="visitDay"/>
+    <var name="visitMonth"/>
+    <var name="visitYear"/>
+
+    <form id="buyTickets">
+	<block>
+	    <script>
+		var f = new Date();
+		day = f.getDate();
+		month= f.getMonth();
+		year= f.getFullYear();
+            </script>
+	    <prompt bargein="false">Hoy es dia <value expr="day"/> del 
+		<value expr="month"/> de <value expr="year"/>.</prompt>
+	</block>
+	<grammar src="./fullDate.jsgf"/>
+	<initial name="fullDate">
+	    <prompt>Para que fecha quiere comprar su ticket?</prompt>
+	</initial>
+    </form>
+
+</vxml>

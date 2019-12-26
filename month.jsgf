@@ -1,0 +1,11 @@
+#JSGF V1.0;
+
+grammar month;
+
+public <month> = [en] [de] [el] [<monthString> | <numericMonth>];
+
+<monthString> = enero | febrero | marzo | abril | mayo | junio | julio | 
+    agosto | septiembre | octubre | noviembre | diciembre;
+
+<numericMonth> =  uno | dos | tres | cuatro | cinco | seis | siete | ocho |
+    nueve | diez | once | doce;
