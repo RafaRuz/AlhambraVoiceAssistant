@@ -134,16 +134,20 @@
         <if cond="numberNames.indexOf(number) > 10">
           <prompt>No puede reservar mas de 10 entradas. Intentelo de nuevo.</prompt>
           <clear namelist="number"/>
+	<elseif cond="numberNames.indexOf(number) == 0"/>
+	  <prompt>Tienes que reservar más de cero entradas. Inténtelo de nuevo.</prompt>
+	  <clear namelist="number"/>
         <else/>
           De acuerdo. En breve recibira sus <value expr="number"/> entradas para el dia
           <value expr="document.visit_day"/> de <value expr="document.visit_month"/>
           de <value expr="document.visit_year"/>. Gracias por usar nuestro servicio de venta onlain.
-        </if>
-	<clear namelist="number document.fullDate document.visitDay"/>
+	<goto next="./app-root.vxml#finish"/>
+<clear namelist="number document.fullDate document.visitDay"/>
 	<clear namelist="document.visitMonth document.visitYear"/>
         <clear namelist="document.visitDayConfirmation document.visitMonthConfirmation 
 			document.visitYearConfirmation"/>
-	<goto next="./app-root.vxml#finish"/>
+        </if>
+	
       </filled>
   	</field>
   </form>

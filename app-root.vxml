@@ -48,7 +48,7 @@
 
   <form id="negation">
     <block>
-	    De acuerdo, continuemos.
+	    De acuerdo, volvamos al menú principal.
 	    <goto expr="lastDialog"/>
 	  </block>
   </form>
