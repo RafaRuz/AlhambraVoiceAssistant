@@ -2,7 +2,7 @@
 
 grammar month;
 
-public <month> = [en] [de] [el] [<monthString> | <numericMonth>];
+public <month> = [en] [de] [el] <monthString> {this.visitMonth=$monthString};
 
 <monthString> = enero | febrero | marzo | abril | mayo | junio | julio | 
     agosto | septiembre | octubre | noviembre | diciembre;

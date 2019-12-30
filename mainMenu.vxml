@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <vxml version="2.1" application="app-root.vxml" xml:lang="es-ES">
-    <menu id="mainMenu">
-	<block>
-   		<assign name="lastDialog" expr="./mainMenu.vxml#mainMenu"/>
-	</block>
-	<prompt bargein="false">Bienvenido al servicio de compra de entradas para 
-		visitar la Alhambra. Elija una de las siguientes opciones: <enumerate/>
-	</prompt>
-	<choice next="./buyTickets.vxml"> Comprar tiquets.	</choice>
-	<choice next="./buyTickets.vxml"> Informacion general.	</choice>
-	<choice next="./buyTickets.vxml"> Ayuda.		</choice>
-	<noinput>Por favor, elija una de las opciones: <enumerate/></noinput>
-	<nomatch count="1">No le he entendido. Por favor, elija una de las opciones: 
+
+
+  <menu id="mainMenu">
+  	<block>
+   		<assign name="lastDialog" expr="'./mainMenu.vxml#mainMenu'"/>
+   		<assign name="document.lastDialog" expr="'./mainMenu.vxml#mainMenu'"/>
+   		<assign name="application.lastDialog" expr="'./mainMenu.vxml#mainMenu'"/>
+    </block>
+    <prompt bargein="false">Por favor, elija una de las siguientes opciones:
+    </prompt>
+    <choice dtmf="1" next="./buyTickets.vxml"> Comprar entradas.</choice>
+    <choice dtmf="2" next="./scheduleInfo.vxml"> Horarios de visita.</choice>
+    <choice dtmf="3" next="./weather.vxml"> Información meteorologica. </choice>
+	  <noinput>Por favor, elija una de las opciones: <enumerate/></noinput>
+	  <nomatch count="1">No le he entendido. Por favor, elija una de las opciones:
 		<enumerate/></nomatch>
-	<nomatch count="2">Sigo sin entenderle. Intente hablar mas alto y elija una de las
+	  <nomatch count="2">Sigo sin entenderle. Intente hablar mas alto y elija una de las
 		opciones: <enumerate/></nomatch>
-    </menu>
+    <enumerate/>
+  </menu>
+
 </vxml>
+

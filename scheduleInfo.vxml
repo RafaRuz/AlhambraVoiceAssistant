@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.1" application="app-root.vxml" xml:lang="es-ES">
+
+  <var name="info1" expr="'el horario para la visita diurna es de ocho y media a ocho de la tarde, y para la visita nocturna de diez a once y media de la noche.'"/>
+  <var name="info2" expr="'el horario para la visita es de ocho y media a ocho de la tarde.'"/>
+  <var name="info3" expr="'el horario de visitas diurnas es de ocho y media a ocho de la tarde todos los dias de la semana.'"/>
+  <var name="info4" expr="'el horario de visitas nocturnas es de diez a once y media de la noche, de martes a sabado.'"/>
+
+  <form id="modo">
+    <catch event="help">
+      Si desea ver el horario de visitas para un dia concreto de la semana, 
+      diga sí. Si desea ver el horario de todas las visitas disponibles durante la semana, diga no.
+    </catch>
+    <field name="dia_concreto">
+	<grammar xml:lang="es-ES">
+	    <rule id="sino"><one-of><item>si</item><item>no</item></one-of></rule>
+	</grammar>
+      <prompt bargein="false">
+	Quiere ver los horarios para un dia de la semana concreto?
+      </prompt>
+      <filled>
+        <if cond="dia_concreto=='si'">
+          <goto next="#fecha"/>
+        <elseif cond="dia_concreto=='no'"/>
+          <goto next="#horario"/>
+        </if>
+      </filled>
+    </field>
+  </form>
+
+  <form id="fecha">
+    <catch event="help">
+      Diga el dia de la semana para el que desea ver los horarios de visita.
+    </catch>
+    <field name="dia">
+      <grammar src="weekdays.jsgf"/>
+      <prompt>Qué dia de la semana? </prompt>
+      <filled>
+	<if cond="dia$.confidence >= 0.4">
+	  <assign name="confirmacionDia" expr="true"/>
+	</if>
+      </filled>
+    </field>
+    <field name="confirmacionDia" cond="0.4 > dia$.confidence">
+      <prompt>Has dicho el día: <emp><value expr="dia"/></emp>?</prompt>
+      <grammar xml:lang="es-ES">
+	<rule id="sino"><one-of><item>si</item><item>no</item></one-of></rule>
+      </grammar>
+      <filled>
+        <if cond="confirmacionDia=='no'"><clear namelist="dia confirmacionDia"/></if>
+      </filled>
+    </field>
+    <filled>
+      <if cond="dia=='lunes'">
+        <prompt>Los <value expr="dia"/> <value expr="info2"/> </prompt>
+      <elseif cond="dia=='martes'"/>
+        <prompt>Los <value expr="dia"/> <value expr="info1"/> </prompt>
+      <elseif cond="dia=='miercoles'"/>
+        <prompt>Los <value expr="dia"/> <value expr="info1"/> </prompt>
+      <elseif cond="dia=='jueves'"/>
+        <prompt>Los <value expr="dia"/> <value expr="info1"/> </prompt>
+      <elseif cond="dia=='viernes'"/>
+        <prompt>Los <value expr="dia"/> <value expr="info1"/> </prompt>
+      <elseif cond="dia=='sabado'"/>
+        <prompt>El <value expr="dia"/> <value expr="info1"/> </prompt>
+      <elseif cond="dia=='domingo'"/>
+        <prompt>El <value expr="dia"/> <value expr="info2"/> </prompt>
+      </if>
+	<clear namelist="dia confirmacionDia"/>
+	<goto next="./app-root.vxml#finish"/>
+    </filled>
+  </form>
+
+  <form id="horario">
+    <field name="visita">
+      <catch event="help">
+        Diga <emp>diurna</emp> para saber el horario de las visitas diurnas.      
+        Diga <emp>nocturna</emp> para saber el horario de las visitas nocturnas.
+      </catch>
+	<grammar xml:lang="es-ES">
+		<rule id="dn"><one-of><item>diurna</item><item>nocturna</item></one-of></rule>
+	</grammar>
+      <prompt>Quiere hacer una visita diurna o nocturna?</prompt>
+    </field>
+    <filled>
+      <if cond="visita=='diurna'">
+        <prompt> <value expr="info3"/> </prompt>
+      <elseif cond="visita=='nocturna'"/>
+        <prompt> <value expr="info4"/> </prompt>
+      </if>
+	<clear namelist="visita"/>
+	<goto next="./app-root.vxml#finish"/>
+    </filled>
+  </form>
+
+</vxml>
+

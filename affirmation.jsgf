@@ -2,4 +2,4 @@
 
 grammar affirmation;
 
-public <affirmation> = si|claro|afirmativo|por supuesto;
+public <affirmation> = si|claro|afirmativo|por supuesto|asi es|vale|okey|de acuerdo;

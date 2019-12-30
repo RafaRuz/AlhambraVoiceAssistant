@@ -1,0 +1,7 @@
+#JSGF V1.0;
+
+grammar weekdays;
+
+public <weekdays> = [en] [para] [el] <weekday> {this.dia=$weekday};
+
+<weekday> = lunes | martes | miercoles | jueves | viernes | sabado | domingo;

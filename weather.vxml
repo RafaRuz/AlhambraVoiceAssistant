@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.1" application="app-root.vxml" xml:lang="es-ES">
+    <var name="r" expr="Math.random()"/>
+
+    <form id="weather">
+		<grammar src="./fullDate.jsgf"/>
+
+  	<initial name="fullDate">
+      <prompt bargein="false">Sobre que fecha quiere conocer el tiempo?</prompt>
+      <link event="help">
+        <grammar src="./help.jsgf"/>
+      </link>
+      <catch event="help">
+        Di el dia, el mes y el año sobre el que deseas conocer el tiempo, por ejemplo, tres de marzo de dos mil veinte.
+      </catch>
+      <nomatch count="1">No le he entendido. 
+      </nomatch>
+      <nomatch count="2">Sigo sin entenderle. Voy a solicitarle la fecha de otra forma.
+  	    <assign name="fullDate" expr="true"/>
+  	    <reprompt/>
+      </nomatch>
+  	</initial>
+
+		<field name="visitDay">
+			<prompt>Diga el día</prompt>
+			<grammar src="./day.jsgf"/>
+		</field>
+		
+		<field name="visitMonth">
+			<prompt>Diga el mes</prompt>
+			<grammar src="./month.jsgf"/>
+		</field>
+
+		<field name="visitYear">
+			<prompt>Diga el año</prompt>
+			<grammar src="./year.jsgf"/>
+		</field>
+
+	
+		<filled mode="all" namelist="visitDay visitMonth visitYear">
+			<if cond="visitMonth == 'diciembre' ||
+			    visitMonth == 'enero' ||
+			    visitMonth == 'febrero'">
+    			<prompt cond="r &lt; .33">
+    				Tendremos 4 grados y ligeras lloviznas el día <value expr="visitDay"/> de <value expr="visitMonth"/> de <value expr="visitYear"/>
+    			</prompt>
+    			<prompt cond="r &lt; .66 &amp;&amp; r >= .33">
+    				Tiempo soleado y 8 grados centígrados el día <value expr="visitDay"/> de <value expr="visitMonth"/> de <value expr="visitYear"/>
+    			</prompt>
+    			<prompt cond="r >= .66">
+    				Posibles nevadas y menos un grado centígrado el día <value expr="visitDay"/> de <value expr="visitMonth"/> de <value expr="visitYear"/>
+    			</prompt>
+    		<elseif cond="visitMonth == 'marzo' ||
+			    visitMonth == 'abril' ||
+			    visitMonth == 'mayo'"/>
+			    <prompt cond="r &lt; .33">
+    				Fuertes lluvias y 10 grados centígrados el día <value expr="visitDay"/> de <value expr="visitMonth"/> de <value expr="visitYear"/>
+    			</prompt>
+    			<prompt cond="r &lt; .66 &amp;&amp; r >= .33">
+    				Doce grados centígrados y niebla semiespesa el día <value expr="visitDay"/> de <value expr="visitMonth"/> de <value expr="visitYear"/>
+    			</prompt>
+    			<prompt cond="r >= .66">
+    				Tiempo soleado durante todo el día y 20 grados el día <value expr="visitDay"/> de <value expr="visitMonth"/> de <value expr="visitYear"/>
+    			</prompt>
+    		<elseif cond="visitMonth == 'junio' ||
+			    visitMonth == 'julio' ||
+			    visitMonth == 'agosto'"/>
+			    <prompt cond="r &lt; .33">
+    				27 grados centígrados y máximas de 34 grados el día <value expr="visitDay"/> de <value expr="visitMonth"/> de <value expr="visitYear"/>
+    			</prompt>
+    			<prompt cond="r &lt; .66 &amp;&amp; r >= .33">
+    				40 grados, no vayas a la Alhambra el día <value expr="visitDay"/> de <value expr="visitMonth"/> de <value expr="visitYear"/>
+    			</prompt>
+    			<prompt cond="r >= .66">
+    				36 grados y posibles tormentas el día <value expr="visitDay"/> de <value expr="visitMonth"/> de <value expr="visitYear"/>
+    			</prompt>
+    		<elseif cond="visitMonth == 'septiembre' ||
+			    visitMonth == 'octubre' ||
+			    visitMonth == 'noviembre'"/>
+			    <prompt cond="r &lt; .33">
+    				25 grados y día soleado el <value expr="visitDay"/> de <value expr="visitMonth"/> de <value expr="visitYear"/>
+    			</prompt>
+    			<prompt cond="r &lt; .66 &amp;&amp; r >= .33">
+    				Posibles lluvias y 17 grados centígrados el día <value expr="visitDay"/> de <value expr="visitMonth"/> de <value expr="visitYear"/>
+    			</prompt>
+    			<prompt cond="r >= .66">
+    				Tiempo nuboso y 10 grados el día <value expr="visitDay"/> de <value expr="visitMonth"/> de <value expr="visitYear"/>
+    			</prompt>
+    		</if>
+	<goto next="./app-root.vxml#finish"/>
+		</filled>
+	
+    </form>
+
+
+
+</vxml>
+

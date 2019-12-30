@@ -11,7 +11,7 @@ public <fullDate> =
         [dia]
         [<day> {this.visitDay=$day}]
         [de|del]
-        [<month> {this.visitMonth=$month} | <numericMonth> {this.visitMonth=$numericMonth}]
+        [<month> {this.visitMonth=$month}]
         [de|del]
         [<year> {this.visitYear=$year}];
 
@@ -20,7 +20,7 @@ public <fullDate> =
 
 <day> = uno | dos | tres | cuatro | cinco | seis | siete | ocho |
     nueve | diez | once | doce | trece | catorce | quince | dieciseis | diecisiete |
-    dieciocho | diecinueve | veinte | veintiuno | veintidos | veintitres | veinticuatro |
+    dieciocho | diecinueve | veinte | veintiuno | veintidós | veintitrés | veinticuatro |
     veinticinco | veintiseis | veintisiete | veintiocho | veintinueve | treinta | 
     treinta y uno;
 
@@ -31,7 +31,9 @@ public <fullDate> =
 
 <year> = <digit> mil <digit2>;
 <digit> = dos | tres | cuatro | cinco | seis | siete | ocho | nueve;
-<digit2> = diecinueve | veinte | veintiuno | veintidós | veintitrés | veinticuatro | veinticinco | 
+<digit2> = uno | dos | tres | cuatro | cinco | seis | siete | ocho |
+    nueve | diez | once | doce | trece | catorce | quince | dieciséis | diecisiete |
+    dieciocho | diecinueve | veinte | veintiuno | veintidós | veintitrés | veinticuatro | veinticinco | 
     veintiséis | veintisiete | veintiocho | veintinueve | treinta | treinta y uno | treinta y dos | 
     treinta y tres | treinta y cuatro | treinta y cinco | treinta y seis | treinta y siete | treinta y ocho | 
     treinta y nueve | cuarenta | cuarenta y uno | cuarenta y dos | cuarenta y tres | cuarenta y cuatro | 

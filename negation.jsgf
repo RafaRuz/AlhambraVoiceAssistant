@@ -2,4 +2,4 @@
 
 grammar negation;
 
-public <negation> = no|negativo|claro que no;
+public <negation> = no|negativo|claro que no| que va| para nada | ni hablar| en absoluto;

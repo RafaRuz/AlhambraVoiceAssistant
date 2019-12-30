@@ -1,28 +1,154 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <vxml version="2.1" application="app-root.vxml" xml:lang="es-ES">
 
-    <var name="day"/>
-    <var name="month"/>
-    <var name="year"/>
-    <var name="visitDay"/>
-    <var name="visitMonth"/>
-    <var name="visitYear"/>
+  <var name="day" scope="document"/>
+  <var name="month" scope="document"/>
+  <var name="numericMonth" scope="document"/>
+  <var name="year" scope="document"/>
+  <var name="visitYearEnding" scope="document"/>
+  <var name="numericVisitYear" scope="document"/>
 
-    <form id="buyTickets">
-	<block>
+  <var name="numberNames" scope="document"/>
+  <var name="monthNames" scope="document"/>
+
+  <var name="visit_day" scope="document"/>
+  <var name="visit_month" scope="document"/>
+  <var name="visit_year" scope="document"/>
+
+
+  <form id="buyTickets">
+	  <block>
 	    <script>
-		var f = new Date();
-		day = f.getDate();
-		month= f.getMonth();
-		year= f.getFullYear();
-            </script>
-	    <prompt bargein="false">Hoy es dia <value expr="day"/> del 
-		<value expr="month"/> de <value expr="year"/>.</prompt>
-	</block>
-	<grammar src="./fullDate.jsgf"/>
-	<initial name="fullDate">
-	    <prompt>Para que fecha quiere comprar su ticket?</prompt>
-	</initial>
-    </form>
+		    monthNames = ["enero", "febrero", "marzo", "abril", "mayo", "junio",
+  		    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+        numberNames = ["cero","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez","once","doce","trece","catorce","quince","dieciséis","diecisiete","dieciocho","diecinueve","veinte","veintiuno","veintidós","veintitrés","veinticuatro","veinticinco","veintiseis","veintisiete","veintiocho","veintinueve","treinta","treinta y uno","treinta y dos","treinta y tres","treinta y cuatro","treinta y cinco","treinta y seis","treinta y siete","treinta y ocho","treinta y     nueve","cuarenta","cuarenta y uno","cuarenta y dos","cuarenta y tres","cuarenta y cuatro","cuarenta y cinco","cuarenta y seis","cuarenta y siete","cuarenta y ocho","cuarenta y nueve","cincuenta","cincuenta y uno","cincuenta y dos","cincuenta y tres","cincuenta y cuatro","cincuenta y cinco","cincuenta y seis","cincuenta y siete","cincuenta y ocho","cincuenta y nueve","sesenta","sesenta y uno","sesenta y dos","sesenta y tres","sesenta y cuatro","sesenta y cinco","sesenta y seis","sesenta y siete","sesenta y ocho","sesenta y nueve","setenta","setenta y uno","setenta y dos","setenta y tres","setenta y cuatro","setenta y cinco","setenta y seis","setenta y siete","setenta y ocho","setenta y nueve","ochenta","ochenta y uno","ochenta y dos","ochenta y tres","ochenta y cuatro","ochenta y cinco","ochenta y seis","ochenta y siete","ochenta y ocho","ochenta y nueve","noventa","noventa y uno","noventa y dos","noventa y tres","noventa y cuatro","noventa y cinco","noventa y seis","noventa y siete","noventa y ocho","noventa y nueve"];
+        var f = new Date();
+    		day = f.getDate();
+    		numericMonth = f.getMonth();
+    		month = monthNames[f.getMonth()];
+    		year= f.getFullYear();
+      </script>
+	    <prompt bargein="false">Hoy es dia <value expr="day"/> de
+		    <value expr="month"/> de <value expr="year"/>.</prompt>
+	<assign name="application.lastDialog" expr="'./buyTickets.vxml#buyTickets'"/>
+    </block>
+
+  	<grammar src="./fullDate.jsgf"/>
+
+  	<initial name="fullDate">
+      <prompt bargein="false">Para que fecha quiere comprar su ticket?</prompt>
+      <link event="help">
+        <grammar src="./help.jsgf"/>
+      </link>
+      <catch event="help">
+        Di el dia, el mes y el año para el que deseas reservar un ticket.
+      </catch>
+      <nomatch count="1">No le he entendido. Por ejemplo, diga 14 de Mayo del
+  	    dos mil veinte.
+      </nomatch>
+      <nomatch count="2">Sigo sin entenderle. Voy a solicitarle la fecha de otra forma.
+  	    <assign name="fullDate" expr="true"/>
+  	    <reprompt/>
+      </nomatch>
+  	</initial>
+
+  	<field name="visitDay">
+      <prompt>Que dia quiere realizar su visita?</prompt>
+      <grammar src="./day.jsgf"/>
+  	</field>
+
+  	<field name="visitDayConfirmation" type="boolean" cond="0.4 > visitDay$.confidence">
+      <prompt>Has dicho el día: <emp><value expr="visitDay"/></emp>?</prompt>
+      <filled>
+  	    <if cond="!visitDayConfirmation"><clear namelist="visitDay"/></if>
+      </filled>
+  	</field>
+
+  	<field name="visitMonth">
+      <prompt>Que mes quiere realizar su visita?</prompt>
+      <grammar src="./month.jsgf"/>
+      <nomatch count="1">No le he entendido. Diga el mes correspondiente, por ejemplo, enero.
+      </nomatch>
+  	</field>
+
+	<field name="visitMonthConfirmation" type="boolean" 
+		cond="0.4 > visitMonth$.confidence">
+      <prompt>Has dicho el mes: <emp><value expr="visitDay"/></emp>?</prompt>
+      <filled>
+  	    <if cond="!visitMonthConfirmation"><clear namelist="visitMonth"/></if>
+      </filled>
+  	</field>
+
+  	<field name="visitYear">
+      <prompt>Que año quiere realizar su visita?</prompt>
+      <grammar src="./year.jsgf"/>
+  	</field>
+
+	<field name="visitYearConfirmation" type="boolean" 
+		cond="0.4 > visitYear$.confidence">
+      <prompt>Has dicho el año: <emp><value expr="visitYear"/></emp>?</prompt>
+      <filled>
+  	    <if cond="!visitYearConfirmation"><clear namelist="visitYear"/></if>
+      </filled>
+  	</field>
+
+  	<filled mode="all" namelist="visitDay visitMonth visitYear">
+      <script>
+  	    visitYearEnding = visitYear.replace('dos mil ','');
+  	    numericVisitYear = 2000 + numberNames.indexOf(visitYearEnding);
+      </script>
+      <if cond="year > numericVisitYear">
+        <prompt>Ese dia ya ha pasado. Intentelo de nuevo.</prompt>
+        <clear namelist="fullDate visitDay visitMonth visitYear"/>
+        <clear namelist="visitDayConfirmation visitMonthConfirmation visitYearConfirmation"/>
+      <elseif cond="(year == numericVisitYear) &amp;&amp;
+  		  (numericMonth > monthNames.indexOf(visitMonth))"/>
+        <prompt>Ese dia ya ha pasado. Intentelo de nuevo.</prompt>
+        <clear namelist="fullDate visitDay visitMonth visitYear"/>
+        <clear namelist="visitDayConfirmation visitMonthConfirmation visitYearConfirmation"/>
+      <elseif cond="(year == numericVisitYear) &amp;&amp;
+  		  (numericMonth == monthNames.indexOf(visitMonth)) &amp;&amp;
+  		  (day > numberNames.indexOf(visitDay))"/>
+        <prompt>Ese dia ya ha pasado. Intentelo de nuevo.</prompt>
+        <clear namelist="fullDate visitDay visitMonth visitYear"/>
+        <clear namelist="visitDayConfirmation visitMonthConfirmation visitYearConfirmation"/>
+      <else/>
+        <assign name="document.visit_day" expr="visitDay"/>
+        <assign name="document.visit_month" expr="visitMonth"/>
+        <assign name="document.visit_year" expr="visitYear"/>
+        <prompt>Fecha registrada con exito.</prompt>
+        <goto next="#nTickets"/>
+      </if>
+  	</filled>
+
+  </form>
+
+  <form id="nTickets">
+<catch event="help">
+        Diga el numero de entradas que desea, hasta un maximo de diez.
+      </catch>
+    <field name="number">
+      <prompt>Cuantas entradas quiere?</prompt>
+      <grammar src="./nTickets.jsgf"/>
+      <filled>
+        <if cond="numberNames.indexOf(number) > 10">
+          <prompt>No puede reservar mas de 10 entradas. Intentelo de nuevo.</prompt>
+          <clear namelist="number"/>
+        <else/>
+          De acuerdo. En breve recibira sus <value expr="number"/> entradas para el dia
+          <value expr="document.visit_day"/> de <value expr="document.visit_month"/>
+          de <value expr="document.visit_year"/>. Gracias por usar nuestro servicio de venta onlain.
+        </if>
+	<clear namelist="number document.fullDate document.visitDay"/>
+	<clear namelist="document.visitMonth document.visitYear"/>
+        <clear namelist="document.visitDayConfirmation document.visitMonthConfirmation 
+			document.visitYearConfirmation"/>
+	<goto next="./app-root.vxml#finish"/>
+      </filled>
+  	</field>
+  </form>
+
+
 
 </vxml>
+

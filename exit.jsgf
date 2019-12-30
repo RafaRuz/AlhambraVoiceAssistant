@@ -2,4 +2,4 @@
 
 grammar exit;
 
-public <exit> = adios|terminar|finalizar|salir;
+public <exit> = adios|terminar|finalizar|salir|acabar|fin|basta;

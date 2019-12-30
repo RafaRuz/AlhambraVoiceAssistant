@@ -1,51 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <vxml version="2.1" xml:lang="es-ES">
 
-    
+
+  <property name="timeout" value="5s"/>
+
+  <var name="lastDialog" expr="'./mainMenu.vxml#mainMenu'" scope="document"/>
 
 
-    <!-- Aqui podemos definir variables globales -->
-
-    <property name="timeout" value="5s"/>
-
-    <var name="lastDialog" scope="application"/>
-
-
-    <form id="start">
-	<block>
-	    <goto next="./buyTickets.vxml"/>
-	</block>
-    </form>
+  <form id="start">
+    <block>
+	<prompt bargein="false">
+		<audio caching="safe" src="./welcome.mp3"/>
+		Bienvenido al servicio de compra de entradas para visitar la Alhambra.
+	</prompt>
+      <goto next="./mainMenu.vxml"/>
+    </block>
+  </form>
 
 
-    <link event="exit">
-	<grammar src="./exit.jsgf"/>
-    </link>
+  <link event="exit">
+    <grammar src="./exit.jsgf"/>
+  </link>
 
-    <catch event="exit">
-	<goto next="./app-root.vxml#confirmExit"/>
-    </catch>
+  <catch event="exit">
+	   <goto next="./app-root.vxml#confirmExit"/>
+  </catch>
 
-    <menu id="confirmExit">
-	<prompt>Seguro que desea terminar su compra?</prompt>
-	<choice next="#confirmation"><grammar src="./affirmation.jsgf"/></choice>
-	<choice next="#negation"><grammar src="./negation.jsgf"/></choice>
-    </menu>
+  <link event="help">
+      <grammar src="./help.jsgf"/>
+  </link>
+  <catch event="help">
+      Elige una de las opciones y te ayudare si no sabes que hacer en alguna de ellas.
+  </catch>
 
-    <form id="confirmation">
-	<block>
-	    De acuerdo, hasta la proxima.
-	    <exit/>
-	</block>
-    </form>
+  <menu id="confirmExit">
+    <prompt>Seguro que desea salir?</prompt>
+    <choice next="#confirmation"><grammar src="./affirmation.jsgf"/></choice>
+    <choice next="#negation"><grammar src="./negation.jsgf"/></choice>
+  </menu>
 
-    <form id="negation">
-	<block>
-	    De acuerdo, continuamos por donde nos quedamos.
+  <form id="confirmation">
+    <block>
+      De acuerdo, hasta la proxima.
+      <exit/>
+	  </block>
+  </form>
+
+  <form id="negation">
+    <block>
+	    De acuerdo, continuemos.
 	    <goto expr="lastDialog"/>
-	</block>
-    </form>
+	  </block>
+  </form>
 
+  <form id="finish">
+    <field name="repeat">
+      <grammar xml:lang="es-ES">
+	    <rule id="sino"><one-of><item>si</item><item>no</item></one-of></rule>
+	</grammar>
+      <prompt bargein="false">
+	       Desea algo mas?
+      </prompt>
+      <filled>
+        <if cond="repeat=='si'">
+          <goto next="./mainMenu.vxml"/>
+        <elseif cond="repeat=='no'"/>
+          Adios, esperamos su visita.
+          <exit/>
+        </if>
+      </filled>
+    </field>
+  </form>
 
 </vxml>
 
